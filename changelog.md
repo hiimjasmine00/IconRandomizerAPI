@@ -1,4 +1,8 @@
 # Icon Randomizer API Changelog
+## v2.1.0 (2025-01-29)
+- Added fromUnlockType and toIconType functions
+- Changed the More Icons support to match the new API
+
 ## v2.0.0 (2024-11-15)
 - Fixed the semver (I realized that I made a breaking change in a patch version)
 - Ported to Geode v4.0.0-beta.1

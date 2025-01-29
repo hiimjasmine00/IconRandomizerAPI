@@ -5,19 +5,18 @@ A mod that provides an API for randomizing icons and colors.
 To use this API, you must first add the following dependency to your `mod.json` file:
 ```json
 {
-    "dependencies": [
-        {
-            "id": "hiimjustin000.icon_randomizer_api",
-            "version": ">=v1.1.0",
+    "dependencies": {
+        "hiimjustin000.icon_randomizer_api": {
+            "version": ">=v2.1.0",
             "importance": "required"
         }
-    ]
+    }
 }
 ```
 
 Then, you can use the API. For example:
 ```cpp
-// This includes <Geode/Geode.hpp> for you
+// Include the API
 #include <hiimjustin000.icon_randomizer_api/include/IconRandomizer.hpp>
 
 using namespace geode::prelude;

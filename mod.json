@@ -1,30 +1,33 @@
 {
-    "geode": "4.0.0-beta.1",
+    "geode": "4.2.0",
     "gd": {
         "android": "2.2074",
         "win": "2.2074",
         "mac": "2.2074"
     },
-    "version": "v2.0.0",
+    "version": "v2.1.0",
     "id": "hiimjustin000.icon_randomizer_api",
     "name": "Icon Randomizer API",
-    "developer": "hiimjustin000",
+    "developer": "hiimjasmine00",
     "description": "A mod that provides an API for randomizing icons and colors.",
     "api": {
         "include": [
             "include/*.hpp"
         ]
     },
-    "dependencies": [
-        {
-            "id": "hiimjustin000.better_icon_randomizer",
-            "version": ">=v1.4.2",
-            "importance": "suggested"
+    "dependencies": {
+        "hiimjustin000.better_icon_randomizer": {
+            "importance": "suggested",
+            "version": ">=v1.4.2"
+        },
+        "hiimjustin000.more_icons": {
+            "importance": "suggested",
+            "version": ">=v1.7.0"
         }
-    ],
+    },
     "links": {
         "community": "https://discord.gg/QVKmbvBXA7",
-        "source": "https://github.com/hiimjustin000/IconRandomizerAPI",
+        "source": "https://github.com/hiimjasmine00/IconRandomizerAPI",
         "homepage": "https://www.hiimjustin000.com"
     },
     "tags": [

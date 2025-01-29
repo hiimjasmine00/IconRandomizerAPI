@@ -1,4 +1,4 @@
-#include <Geode/Geode.hpp>
+#include <Geode/Enums.hpp>
 
 #ifdef GEODE_IS_WINDOWS
     #ifdef ICON_RANDOMIZER_API_EXPORTING
@@ -46,58 +46,6 @@ enum RandomizeAllType {
  * The class for the Icon Randomizer API.
  */
 class ICON_RANDOMIZER_API_DLL IconRandomizer {
-private:
-    // A list of the IDs the player has unlocked for each type of icon.
-    inline static std::map<UnlockType, std::vector<int>> UNLOCKED = {
-        { UnlockType::Cube, {} },
-        { UnlockType::Col1, {} },
-        { UnlockType::Col2, {} },
-        { UnlockType::Ship, {} },
-        { UnlockType::Ball, {} },
-        { UnlockType::Bird, {} },
-        { UnlockType::Dart, {} },
-        { UnlockType::Robot, {} },
-        { UnlockType::Spider, {} },
-        { UnlockType::Streak, {} },
-        { UnlockType::Death, {} },
-        { UnlockType::GJItem, {} },
-        { UnlockType::Swing, {} },
-        { UnlockType::Jetpack, {} },
-        { UnlockType::ShipFire, {} }
-    };
-
-    // A flag to check if the API has been initialized.
-    inline static bool INITIALIZED = false;
-
-    // The icon part of the initialization function.
-    // This takes a parameter for the type of icon to initialize.
-    static void setupUnlockedIcons(IconType type);
-
-    // The color part of the initialization function.
-    // This takes a parameter for the type of color to initialize.
-    static void setupUnlockedColors(UnlockType type);
-
-    // A helper function to get a saved value from a Geode mod.
-    // This takes the mod, a string for the name of the setting, and a parameter for the default value of the setting.
-    template <class T>
-    static T getModValue(geode::Mod* mod, std::string const& key, T const& defaultValue) {
-        // Get the mod's saved value if it exists, otherwise return the default value.
-        return mod ? mod->getSavedValue(key, defaultValue) : defaultValue;
-    }
-
-    // A helper function to set a saved value from a Geode mod.
-    // This takes the mod, a string for the name of the setting, and a parameter for the value of the setting.
-    template <class T>
-    static void setModValue(geode::Mod* mod, std::string const& key, T const& value) {
-        // Set the mod's saved value, if the mod is actually loaded.
-        if (mod) mod->setSavedValue(key, value);
-    }
-
-    // A helper function to convert a ICON_RANDOMIZER_API constant to a randomize type, for backwards compatibility.
-    static RandomizeType fromConstant(int type);
-
-    // A helper function to convert a ICON_RANDOMIZER_API_ALL constant to a randomize all type, for backwards compatibility.
-    static RandomizeAllType fromAllConstant(int type);
 public:
     /**
      * The function to initalize the Icon Randomizer API.
@@ -120,6 +68,20 @@ public:
      * @returns The randomize type for the icon type.
      */
     static RandomizeType fromIconType(IconType type);
+
+    /**
+     * A function to convert an unlock type to a randomize type.
+     * @param type The unlock type to convert.
+     * @returns The randomize type for the unlock type.
+     */
+    static RandomizeType fromUnlockType(UnlockType type);
+
+    /**
+     * A function to convert a randomize type to an icon type.
+     * @param type The randomize type to convert.
+     * @returns The icon type for the randomize type.
+     */
+    static IconType toIconType(RandomizeType type);
 
     /**
      * A function to convert a randomize type to an unlock type.
