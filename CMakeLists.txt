@@ -6,7 +6,7 @@ set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 set(GEODE_DISABLE_PRECOMPILED_HEADERS ON)
 set(ICON_RANDOMIZER_TESTING OFF)
 
-project(IconRandomizerAPI VERSION 2.1.0)
+project(IconRandomizerAPI VERSION 2.2.0)
 
 add_library(${PROJECT_NAME} SHARED
     src/IconRandomizer.cpp

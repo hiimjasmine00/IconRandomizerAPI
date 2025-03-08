@@ -1,4 +1,8 @@
 # Icon Randomizer API Changelog
+## v2.2.0 (2025-03-07)
+- Added ICON_RANDOMIZER_API_EXPLODE to RandomizeType
+- Fixed colors randomizing beyond the color limit
+
 ## v2.1.0 (2025-01-29)
 - Added fromUnlockType and toIconType functions
 - Changed the More Icons support to match the new API

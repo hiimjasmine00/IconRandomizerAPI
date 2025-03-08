@@ -5,7 +5,7 @@
         "win": "2.2074",
         "mac": "2.2074"
     },
-    "version": "v2.1.0",
+    "version": "v2.2.0",
     "id": "hiimjustin000.icon_randomizer_api",
     "name": "Icon Randomizer API",
     "developer": "hiimjasmine00",
@@ -28,7 +28,7 @@
     "links": {
         "community": "https://discord.gg/QVKmbvBXA7",
         "source": "https://github.com/hiimjasmine00/IconRandomizerAPI",
-        "homepage": "https://www.hiimjustin000.com"
+        "homepage": "https://www.hiimjasmine00.com"
     },
     "tags": [
         "developer",

@@ -6,10 +6,7 @@ To use this API, you must first add the following dependency to your `mod.json` 
 ```json
 {
     "dependencies": {
-        "hiimjustin000.icon_randomizer_api": {
-            "version": ">=v2.1.0",
-            "importance": "required"
-        }
+        "hiimjustin000.icon_randomizer_api": ">=v2.2.0"
     }
 }
 ```
@@ -67,7 +64,8 @@ enum RandomizeType {
     ICON_RANDOMIZER_API_DEATH_EFFECT = 13,
     ICON_RANDOMIZER_API_TRAIL = 14,
     ICON_RANDOMIZER_API_SHIP_FIRE = 15,
-    ICON_RANDOMIZER_API_ANIMATION = 16
+    ICON_RANDOMIZER_API_ANIMATION = 16,
+    ICON_RANDOMIZER_API_EXPLODE = 17
 };
 
 enum RandomizeAllType {
