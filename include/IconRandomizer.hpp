@@ -1,4 +1,5 @@
 #include <Geode/Enums.hpp>
+#include <Geode/platform/cplatform.h>
 
 #ifdef GEODE_IS_WINDOWS
     #ifdef ICON_RANDOMIZER_API_EXPORTING

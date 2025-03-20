@@ -1,3 +1,4 @@
+#include "Internal.hpp"
 #include <Geode/binding/GameManager.hpp>
 #include <Geode/binding/GameStatsManager.hpp>
 #include <Geode/utils/ranges.hpp>
@@ -27,7 +28,7 @@ using namespace geode::prelude;
 #define SDI_EXPLODE "deathexplode"
 
 // A list of the IDs the player has unlocked for each type of icon.
-std::map<UnlockType, std::vector<int>> UNLOCKED = {
+std::map<UnlockType, std::vector<uint8_t>> UNLOCKED = {
     { UnlockType::Cube, {} },
     { UnlockType::Col1, {} },
     { UnlockType::Col2, {} },
@@ -45,8 +46,10 @@ std::map<UnlockType, std::vector<int>> UNLOCKED = {
     { UnlockType::ShipFire, {} }
 };
 
-// A flag to check if the API has been initialized.
-bool INITIALIZED = false;
+$on_mod(Loaded) {
+    // Initialize the Icon Randomizer API when the mod is loaded.
+    IconRandomizer::init();
+}
 
 // The icon part of the initialization function.
 // This takes a parameter for the type of icon to initialize.
@@ -59,7 +62,10 @@ void setupUnlockedIcons(IconType type) {
     // Get the amount of icons for the type, then iterate through them and add them to the vector if they are unlocked.
     auto amount = type == IconType::Item ? 20 : gameManager->countForType(type);
     for (int i = type == IconType::Item ? 18 : 1; i <= amount; i++) {
-        if (gameManager->isIconUnlocked(i, type)) vec.push_back(i);
+        if (gameManager->isIconUnlocked(i, type)) {
+            vec.push_back(i & 255);
+            if (amount > 255) vec.push_back(i >> 8);
+        }
     }
 }
 
@@ -94,9 +100,19 @@ void IconRandomizer::init() {
     setupUnlockedIcons(IconType::Swing);
     setupUnlockedIcons(IconType::Jetpack);
     setupUnlockedIcons(IconType::ShipFire);
+}
 
-    // Set the initialized flag to true.
-    INITIALIZED = true;
+// The function to add an icon or color to the list of unlocked icons or colors.
+void Internal::addToUnlocked(UnlockType type, int id) {
+    // Get the vector of unlocked icons or colors for the type, then add the ID to the vector if it is not already in it.
+    auto& vec = UNLOCKED[type];
+    if (!ranges::contains(vec, id)) {
+        vec.push_back(id & 255);
+        auto gameManager = GameManager::get();
+        if (type != UnlockType::Col1 && type != UnlockType::Col2 && gameManager->countForType(gameManager->unlockTypeToIconType((int)type)) > 255)
+            vec.push_back(id >> 8);
+        std::ranges::sort(vec);
+    }
 }
 
 int IconRandomizer::random(int min, int max) {
@@ -198,12 +214,6 @@ UnlockType IconRandomizer::toUnlockType(RandomizeType type) {
 }
 
 int IconRandomizer::randomize(RandomizeType type, bool dual) {
-    // Initialize the API if it hasn't been already.
-    if (!INITIALIZED) {
-        init();
-        INITIALIZED = true;
-    }
-
     // If the type is invalid, return -1.
     if (type < 0 || type > 16) return -1;
 
@@ -224,9 +234,13 @@ int IconRandomizer::randomize(RandomizeType type, bool dual) {
     auto gameManager = GameManager::get();
     auto separateDualIcons = Loader::get()->getLoadedMod(SDI_ID);
     auto useDual = separateDualIcons && dual;
-    auto loadedIcons = MoreIcons::vectorForType(toIconType(type));
-    auto idx = random(0, vec.size() + loadedIcons.size() - 1);
-    auto num = idx < vec.size() ? vec[idx] : idx - vec.size();
+    auto iconType = toIconType(type);
+    auto loadedIcons = MoreIcons::getIcons(iconType);
+    auto hasDouble = type != ICON_RANDOMIZER_API_COLOR_1 && type != ICON_RANDOMIZER_API_COLOR_2 &&
+        type != ICON_RANDOMIZER_API_GLOW_COLOR && type != ICON_RANDOMIZER_API_GLOW && gameManager->countForType(iconType) > 255;
+    auto vecSize = vec.size() / (hasDouble + 1);
+    auto idx = random(0, vecSize + loadedIcons.size() - 1);
+    auto num = idx < vecSize ? hasDouble ? vec[idx * 2] | (vec[idx * 2 + 1] << 8) : vec[idx] : idx - vecSize;
     auto glow = type == ICON_RANDOMIZER_API_GLOW && ranges::contains(UNLOCKED[UnlockType::Streak], 2) ? (bool)random(0, 1) : false;
     auto explode = type == ICON_RANDOMIZER_API_EXPLODE ? (bool)random(0, 1) : false;
 
@@ -251,98 +265,98 @@ int IconRandomizer::randomize(RandomizeType type, bool dual) {
             else gameManager->setPlayerGlow(glow);
             return glow;
         case ICON_RANDOMIZER_API_CUBE:
-            if (idx < vec.size()) {
+            if (idx < vecSize) {
                 if (useDual) separateDualIcons->setSavedValue(SDI_CUBE, num);
                 else gameManager->setPlayerFrame(num);
                 MoreIcons::setIcon("", IconType::Cube, useDual);
                 return num;
             }
-            MoreIcons::setIcon(loadedIcons[num], IconType::Cube, useDual);
+            MoreIcons::setIcon(loadedIcons[num]->name, IconType::Cube, useDual);
             return 0;
         case ICON_RANDOMIZER_API_SHIP:
-            if (idx < vec.size()) {
+            if (idx < vecSize) {
                 if (useDual) separateDualIcons->setSavedValue(SDI_SHIP, num);
                 else gameManager->setPlayerShip(num);
                 MoreIcons::setIcon("", IconType::Ship, useDual);
                 return num;
             }
-            MoreIcons::setIcon(loadedIcons[num], IconType::Ship, useDual);
+            MoreIcons::setIcon(loadedIcons[num]->name, IconType::Ship, useDual);
             return 0;
         case ICON_RANDOMIZER_API_BALL:
-            if (idx < vec.size()) {
+            if (idx < vecSize) {
                 if (useDual) separateDualIcons->setSavedValue(SDI_BALL, num);
                 else gameManager->setPlayerBall(num);
                 MoreIcons::setIcon("", IconType::Ball, useDual);
                 return num;
             }
-            MoreIcons::setIcon(loadedIcons[num], IconType::Ball, useDual);
+            MoreIcons::setIcon(loadedIcons[num]->name, IconType::Ball, useDual);
             return 0;
         case ICON_RANDOMIZER_API_UFO:
-            if (idx < vec.size()) {
+            if (idx < vecSize) {
                 if (useDual) separateDualIcons->setSavedValue(SDI_UFO, num);
                 else gameManager->setPlayerBird(num);
                 MoreIcons::setIcon("", IconType::Ufo, useDual);
                 return num;
             }
-            MoreIcons::setIcon(loadedIcons[num], IconType::Ufo, useDual);
+            MoreIcons::setIcon(loadedIcons[num]->name, IconType::Ufo, useDual);
             return 0;
         case ICON_RANDOMIZER_API_WAVE:
-            if (idx < vec.size()) {
+            if (idx < vecSize) {
                 if (useDual) separateDualIcons->setSavedValue(SDI_WAVE, num);
                 else gameManager->setPlayerDart(num);
                 MoreIcons::setIcon("", IconType::Wave, useDual);
                 return num;
             }
-            MoreIcons::setIcon(loadedIcons[num], IconType::Wave, useDual);
+            MoreIcons::setIcon(loadedIcons[num]->name, IconType::Wave, useDual);
             return 0;
         case ICON_RANDOMIZER_API_ROBOT:
-            if (idx < vec.size()) {
+            if (idx < vecSize) {
                 if (useDual) separateDualIcons->setSavedValue(SDI_ROBOT, num);
                 else gameManager->setPlayerRobot(num);
                 MoreIcons::setIcon("", IconType::Robot, useDual);
                 return num;
             }
-            MoreIcons::setIcon(loadedIcons[num], IconType::Robot, useDual);
+            MoreIcons::setIcon(loadedIcons[num]->name, IconType::Robot, useDual);
             return 0;
         case ICON_RANDOMIZER_API_SPIDER:
-            if (idx < vec.size()) {
+            if (idx < vecSize) {
                 if (useDual) separateDualIcons->setSavedValue(SDI_SPIDER, num);
                 else gameManager->setPlayerSpider(num);
                 MoreIcons::setIcon("", IconType::Spider, useDual);
                 return num;
             }
-            MoreIcons::setIcon(loadedIcons[num], IconType::Spider, useDual);
+            MoreIcons::setIcon(loadedIcons[num]->name, IconType::Spider, useDual);
             return 0;
         case ICON_RANDOMIZER_API_SWING:
-            if (idx < vec.size()) {
+            if (idx < vecSize) {
                 if (useDual) separateDualIcons->setSavedValue(SDI_SWING, num);
                 else gameManager->setPlayerSwing(num);
                 MoreIcons::setIcon("", IconType::Swing, useDual);
                 return num;
             }
-            MoreIcons::setIcon(loadedIcons[num], IconType::Swing, useDual);
+            MoreIcons::setIcon(loadedIcons[num]->name, IconType::Swing, useDual);
             return 0;
         case ICON_RANDOMIZER_API_JETPACK:
-            if (idx < vec.size()) {
+            if (idx < vecSize) {
                 if (useDual) separateDualIcons->setSavedValue(SDI_JETPACK, num);
                 else gameManager->setPlayerJetpack(num);
                 MoreIcons::setIcon("", IconType::Jetpack, useDual);
                 return num;
             }
-            MoreIcons::setIcon(loadedIcons[num], IconType::Jetpack, useDual);
+            MoreIcons::setIcon(loadedIcons[num]->name, IconType::Jetpack, useDual);
             return 0;
         case ICON_RANDOMIZER_API_DEATH_EFFECT:
             if (useDual) separateDualIcons->setSavedValue(SDI_DEATH, num);
             else gameManager->setPlayerDeathEffect(num);
             return num;
         case ICON_RANDOMIZER_API_TRAIL:
-            if (idx < vec.size()) {
+            if (idx < vecSize) {
                 if (useDual) separateDualIcons->setSavedValue(SDI_TRAIL, num);
                 else gameManager->setPlayerStreak(num);
                 MoreIcons::setIcon("", IconType::Special, useDual);
                 return num;
             }
-            MoreIcons::setIcon(loadedIcons[num], IconType::Special, useDual);
+            MoreIcons::setIcon(loadedIcons[num]->name, IconType::Special, useDual);
             return 0;
         case ICON_RANDOMIZER_API_SHIP_FIRE:
             if (useDual) separateDualIcons->setSavedValue(SDI_SHIP_FIRE, num);

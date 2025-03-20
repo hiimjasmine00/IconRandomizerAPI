@@ -1,4 +1,7 @@
 # Icon Randomizer API Changelog
+## v2.2.1 (2025-03-19)
+- Added auto-refreshing of unlocked icons to the API
+
 ## v2.2.0 (2025-03-07)
 - Added ICON_RANDOMIZER_API_EXPLODE to RandomizeType
 - Fixed colors randomizing beyond the color limit
