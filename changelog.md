@@ -1,4 +1,7 @@
 # Icon Randomizer API Changelog
+## v2.2.2 (2025-04-02)
+- Added support for iOS
+
 ## v2.2.1 (2025-03-19)
 - Added auto-refreshing of unlocked icons to the API
 

@@ -3,9 +3,10 @@
     "gd": {
         "android": "2.2074",
         "win": "2.2074",
-        "mac": "2.2074"
+        "mac": "2.2074",
+        "ios": "2.2074"
     },
-    "version": "v2.2.1",
+    "version": "v2.2.2",
     "id": "hiimjustin000.icon_randomizer_api",
     "name": "Icon Randomizer API",
     "developer": "hiimjasmine00",
