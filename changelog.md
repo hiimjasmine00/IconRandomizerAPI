@@ -1,4 +1,7 @@
 # Icon Randomizer API Changelog
+## v2.2.3 (2025-06-22)
+- Ported to Geode v4.6.1
+
 ## v2.2.2 (2025-04-02)
 - Added support for iOS
 

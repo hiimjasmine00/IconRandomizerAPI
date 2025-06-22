@@ -1,12 +1,12 @@
 {
-    "geode": "4.3.1",
+    "geode": "4.6.1",
     "gd": {
         "android": "2.2074",
         "win": "2.2074",
         "mac": "2.2074",
         "ios": "2.2074"
     },
-    "version": "v2.2.2",
+    "version": "v2.2.3",
     "id": "hiimjustin000.icon_randomizer_api",
     "name": "Icon Randomizer API",
     "developer": "hiimjasmine00",
@@ -32,6 +32,7 @@
         "homepage": "https://www.hiimjasmine00.com"
     },
     "tags": [
+        "api",
         "developer",
         "offline",
         "utility"

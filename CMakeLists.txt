@@ -9,7 +9,7 @@ endif()
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 set(GEODE_DISABLE_PRECOMPILED_HEADERS ON)
 
-project(IconRandomizerAPI VERSION 2.2.2)
+project(IconRandomizerAPI VERSION 2.2.3)
 
 add_library(${PROJECT_NAME} SHARED
     src/hooks/GameManager.cpp
