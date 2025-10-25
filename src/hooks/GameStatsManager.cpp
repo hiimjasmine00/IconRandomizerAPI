@@ -7,6 +7,7 @@
 using namespace geode::prelude;
 
 class $modify(IRAGameStatsManager, GameStatsManager) {
+    // When an icon or color is purchased, add it to the list of unlocked items.
     bool purchaseItem(int id) {
         if (!GameStatsManager::purchaseItem(id)) return false;
 
@@ -19,25 +20,12 @@ class $modify(IRAGameStatsManager, GameStatsManager) {
         return true;
     }
 
-    GJRewardItem* unlockSecretChest(int id) {
-        if (auto item = GameStatsManager::unlockSecretChest(id)) {
-            for (auto object : CCArrayExt<GJRewardObject*>(item->m_rewardObjects)) {
-                if (object->m_specialRewardItem == SpecialRewardItem::CustomItem && object->m_unlockType != UnlockType::GJItem)
-                    Internal::addToUnlocked(object->m_unlockType, object->m_itemID);
+    // When an icon or color is rewarded from a chest or other item, add it to the list of unlocked items.
+    void registerRewardsFromItem(GJRewardItem* item) {
+        for (auto object : CCArrayExt<GJRewardObject*>(item->m_rewardObjects)) {
+            if (object->m_specialRewardItem == SpecialRewardItem::CustomItem && object->m_unlockType != UnlockType::GJItem) {
+                Internal::addToUnlocked(object->m_unlockType, object->m_itemID);
             }
-            return item;
         }
-        return nullptr;
-    }
-
-    GJRewardItem* unlockSpecialChest(gd::string id) {
-        if (auto item = GameStatsManager::unlockSpecialChest(id)) {
-            for (auto object : CCArrayExt<GJRewardObject*>(item->m_rewardObjects)) {
-                if (object->m_specialRewardItem == SpecialRewardItem::CustomItem && object->m_unlockType != UnlockType::GJItem)
-                    Internal::addToUnlocked(object->m_unlockType, object->m_itemID);
-            }
-            return item;
-        }
-        return nullptr;
     }
 };

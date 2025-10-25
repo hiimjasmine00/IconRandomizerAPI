@@ -1,7 +1,7 @@
 # Icon Randomizer API
 A mod that provides an API for randomizing icons and colors.
 
-# Usage
+## Usage
 To use this API, you must first add the following dependency to your `mod.json` file:
 ```json
 {
@@ -42,9 +42,9 @@ IconRandomizer::randomizeAll(ICON_RANDOMIZER_API_ALL_ICONS, true);
 IconRandomizer::randomizeAll(ICON_RANDOMIZER_API_ALL_SPECIAL, true);
 IconRandomizer::randomizeAll(ICON_RANDOMIZER_API_ALL_COLORS, true);
 ```
-Full documentation can be found [here](./include/IconRandomizer.hpp).
+Full documentation can be found [here](https://github.com/hiimjasmine00/IconRandomizerAPI/blob/master/include/IconRandomizer.hpp).
 
-# Constants
+## Constants
 The following constants are available for use:
 ```cpp
 enum RandomizeType {
@@ -75,5 +75,5 @@ enum RandomizeAllType {
 };
 ```
 
-# License
-This mod is licensed under the [MIT License](./LICENSE).
+## License
+This mod is licensed under the [MIT License](https://github.com/hiimjasmine00/IconRandomizerAPI/blob/master/LICENSE).

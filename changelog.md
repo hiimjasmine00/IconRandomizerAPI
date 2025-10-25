@@ -1,4 +1,8 @@
 # Icon Randomizer API Changelog
+## v2.2.4 (2025-10-24)
+- Added auto-refreshing on gold chests and other rewards
+- Added auto-refreshing on account load
+
 ## v2.2.3 (2025-06-22)
 - Ported to Geode v4.6.1
 

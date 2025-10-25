@@ -1,16 +1,16 @@
 {
-    "geode": "4.6.1",
+    "geode": "4.9.0",
     "gd": {
         "android": "2.2074",
         "win": "2.2074",
         "mac": "2.2074",
         "ios": "2.2074"
     },
-    "version": "v2.2.3",
+    "version": "v2.2.4",
     "id": "hiimjustin000.icon_randomizer_api",
     "name": "Icon Randomizer API",
     "developer": "hiimjasmine00",
-    "description": "A mod that provides an API for randomizing icons and colors.",
+    "description": "An API for randomizing icons and colors.",
     "api": {
         "include": [
             "include/*.hpp"
@@ -23,7 +23,7 @@
         },
         "hiimjustin000.more_icons": {
             "importance": "suggested",
-            "version": ">=v1.11.0"
+            "version": ">=v1.14.0"
         }
     },
     "links": {

@@ -4,13 +4,14 @@
 using namespace geode::prelude;
 
 class $modify(IRAGameManager, GameManager) {
-    void reportAchievementWithID(const char* id, int percent, bool skipNotification) {
-        GameManager::reportAchievementWithID(id, percent, skipNotification);
+    // For achievements that unlock icons or colors, add them to the list of unlocked items when the achievement is completed.
+    void completedAchievement(gd::string id) {
+        GameManager::completedAchievement(id);
 
         UnlockType unlockType;
         int iconID;
         GameManager::getUnlockForAchievement(id, iconID, unlockType);
 
-        if (unlockType != (UnlockType)0) Internal::addToUnlocked(unlockType, iconID);
+        if (iconID != 0 && unlockType != (UnlockType)0) Internal::addToUnlocked(unlockType, iconID);
     }
 };
