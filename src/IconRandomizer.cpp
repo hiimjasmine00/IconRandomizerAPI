@@ -3,7 +3,7 @@
 #include <Geode/binding/GameStatsManager.hpp>
 #include <hiimjustin000.more_icons/include/MoreIcons.hpp>
 #include <IconRandomizer.hpp>
-#include <random>
+#include <jasmine/random.hpp>
 
 using namespace geode::prelude;
 
@@ -92,9 +92,8 @@ void Internal::addToUnlocked(UnlockType type, int id) {
 }
 
 int IconRandomizer::random(int min, int max) {
-    // Cvolton had a much longer way of doing this that he grabbed from Stack Overflow, thank you, Copilot, for minimizing it.
-    static std::mt19937 mt(std::random_device{}());
-    return std::uniform_int_distribution<int>(min, max)(mt);
+    // Get a random integer between min and max using jasmine::random.
+    return jasmine::random::getInt(min, max);
 }
 
 RandomizeType IconRandomizer::fromIconType(IconType type) {
@@ -339,7 +338,7 @@ int IconRandomizer::randomize(RandomizeType type, bool dual) {
             return num;
         case ICON_RANDOMIZER_API_EXPLODE:
             if (useDual) separateDualIcons->setSavedValue("deathexplode", explode);
-            else gameManager->setGameVariable("0153", explode);
+            else gameManager->setGameVariable(GameVar::PlayerExplode, explode);
             return explode;
         default:
             return -1;
@@ -419,7 +418,7 @@ int IconRandomizer::active(RandomizeType type, bool dual) {
         case ICON_RANDOMIZER_API_SHIP_FIRE:
             return useDual ? separateDualIcons->getSavedValue("shiptrail", 1) : gameManager->getPlayerShipFire();
         case ICON_RANDOMIZER_API_EXPLODE:
-            return useDual ? separateDualIcons->getSavedValue("deathexplode", 0) : gameManager->getGameVariable("0153");
+            return useDual ? separateDualIcons->getSavedValue("deathexplode", 0) : gameManager->getGameVariable(GameVar::PlayerExplode);
         default:
             return -1;
     }
