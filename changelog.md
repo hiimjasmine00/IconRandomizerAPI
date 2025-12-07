@@ -1,4 +1,7 @@
 # Icon Randomizer API Changelog
+## v2.2.5 (2025-12-07)
+- Updated More Icons support to match the new API
+
 ## v2.2.4 (2025-10-24)
 - Added auto-refreshing on gold chests and other rewards
 - Added auto-refreshing on account load

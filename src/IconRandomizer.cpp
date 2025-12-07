@@ -1,7 +1,8 @@
 #include "Internal.hpp"
 #include <Geode/binding/GameManager.hpp>
 #include <Geode/binding/GameStatsManager.hpp>
-#include <hiimjustin000.more_icons/include/MoreIcons.hpp>
+#define MORE_ICONS_EVENTS
+#include <hiimjustin000.more_icons/include/MoreIconsV2.hpp>
 #include <IconRandomizer.hpp>
 #include <jasmine/random.hpp>
 
@@ -211,9 +212,9 @@ int IconRandomizer::randomize(RandomizeType type, bool dual) {
     auto separateDualIcons = Loader::get()->getLoadedMod("weebify.separate_dual_icons");
     auto useDual = separateDualIcons && dual;
     auto iconType = toIconType(type);
-    auto loadedIcons = MoreIcons::getIcons(iconType);
+    auto loadedIcons = more_icons::getIcons(iconType);
     auto vecSize = vec.size();
-    auto idx = random(0, vecSize + loadedIcons.size() - 1);
+    auto idx = random(0, vecSize + (loadedIcons ? loadedIcons->size() : 0) - 1);
     auto num = idx < vecSize ? vec[idx] : idx - vecSize;
     auto glow = type == ICON_RANDOMIZER_API_GLOW && std::ranges::contains(unlocked[UnlockType::Streak], 2) ? (bool)random(0, 1) : false;
     auto explode = type == ICON_RANDOMIZER_API_EXPLODE ? (bool)random(0, 1) : false;
@@ -242,82 +243,82 @@ int IconRandomizer::randomize(RandomizeType type, bool dual) {
             if (idx < vecSize) {
                 if (useDual) separateDualIcons->setSavedValue("cube", num);
                 else gameManager->setPlayerFrame(num);
-                MoreIcons::setIcon("", IconType::Cube, useDual);
+                more_icons::setIcon("", IconType::Cube, useDual);
                 return num;
             }
-            MoreIcons::setIcon(loadedIcons[num]->name, IconType::Cube, useDual);
+            if (loadedIcons) more_icons::setIcon((*loadedIcons)[num].name, IconType::Cube, useDual);
             return 0;
         case ICON_RANDOMIZER_API_SHIP:
             if (idx < vecSize) {
                 if (useDual) separateDualIcons->setSavedValue("ship", num);
                 else gameManager->setPlayerShip(num);
-                MoreIcons::setIcon("", IconType::Ship, useDual);
+                more_icons::setIcon("", IconType::Ship, useDual);
                 return num;
             }
-            MoreIcons::setIcon(loadedIcons[num]->name, IconType::Ship, useDual);
+            if (loadedIcons) more_icons::setIcon((*loadedIcons)[num].name, IconType::Ship, useDual);
             return 0;
         case ICON_RANDOMIZER_API_BALL:
             if (idx < vecSize) {
                 if (useDual) separateDualIcons->setSavedValue("roll", num);
                 else gameManager->setPlayerBall(num);
-                MoreIcons::setIcon("", IconType::Ball, useDual);
+                more_icons::setIcon("", IconType::Ball, useDual);
                 return num;
             }
-            MoreIcons::setIcon(loadedIcons[num]->name, IconType::Ball, useDual);
+            if (loadedIcons) more_icons::setIcon((*loadedIcons)[num].name, IconType::Ball, useDual);
             return 0;
         case ICON_RANDOMIZER_API_UFO:
             if (idx < vecSize) {
                 if (useDual) separateDualIcons->setSavedValue("bird", num);
                 else gameManager->setPlayerBird(num);
-                MoreIcons::setIcon("", IconType::Ufo, useDual);
+                more_icons::setIcon("", IconType::Ufo, useDual);
                 return num;
             }
-            MoreIcons::setIcon(loadedIcons[num]->name, IconType::Ufo, useDual);
+            if (loadedIcons) more_icons::setIcon((*loadedIcons)[num].name, IconType::Ufo, useDual);
             return 0;
         case ICON_RANDOMIZER_API_WAVE:
             if (idx < vecSize) {
                 if (useDual) separateDualIcons->setSavedValue("dart", num);
                 else gameManager->setPlayerDart(num);
-                MoreIcons::setIcon("", IconType::Wave, useDual);
+                more_icons::setIcon("", IconType::Wave, useDual);
                 return num;
             }
-            MoreIcons::setIcon(loadedIcons[num]->name, IconType::Wave, useDual);
+            if (loadedIcons) more_icons::setIcon((*loadedIcons)[num].name, IconType::Wave, useDual);
             return 0;
         case ICON_RANDOMIZER_API_ROBOT:
             if (idx < vecSize) {
                 if (useDual) separateDualIcons->setSavedValue("robot", num);
                 else gameManager->setPlayerRobot(num);
-                MoreIcons::setIcon("", IconType::Robot, useDual);
+                more_icons::setIcon("", IconType::Robot, useDual);
                 return num;
             }
-            MoreIcons::setIcon(loadedIcons[num]->name, IconType::Robot, useDual);
+            if (loadedIcons) more_icons::setIcon((*loadedIcons)[num].name, IconType::Robot, useDual);
             return 0;
         case ICON_RANDOMIZER_API_SPIDER:
             if (idx < vecSize) {
                 if (useDual) separateDualIcons->setSavedValue("spider", num);
                 else gameManager->setPlayerSpider(num);
-                MoreIcons::setIcon("", IconType::Spider, useDual);
+                more_icons::setIcon("", IconType::Spider, useDual);
                 return num;
             }
-            MoreIcons::setIcon(loadedIcons[num]->name, IconType::Spider, useDual);
+            if (loadedIcons) more_icons::setIcon((*loadedIcons)[num].name, IconType::Spider, useDual);
             return 0;
         case ICON_RANDOMIZER_API_SWING:
             if (idx < vecSize) {
                 if (useDual) separateDualIcons->setSavedValue("swing", num);
                 else gameManager->setPlayerSwing(num);
-                MoreIcons::setIcon("", IconType::Swing, useDual);
+                more_icons::setIcon("", IconType::Swing, useDual);
                 return num;
             }
-            MoreIcons::setIcon(loadedIcons[num]->name, IconType::Swing, useDual);
+            if (loadedIcons) more_icons::setIcon((*loadedIcons)[num].name, IconType::Swing, useDual);
             return 0;
         case ICON_RANDOMIZER_API_JETPACK:
             if (idx < vecSize) {
                 if (useDual) separateDualIcons->setSavedValue("jetpack", num);
                 else gameManager->setPlayerJetpack(num);
-                MoreIcons::setIcon("", IconType::Jetpack, useDual);
+                more_icons::setIcon("", IconType::Jetpack, useDual);
                 return num;
             }
-            MoreIcons::setIcon(loadedIcons[num]->name, IconType::Jetpack, useDual);
+            if (loadedIcons) more_icons::setIcon((*loadedIcons)[num].name, IconType::Jetpack, useDual);
             return 0;
         case ICON_RANDOMIZER_API_DEATH_EFFECT:
             if (useDual) separateDualIcons->setSavedValue("death", num);
@@ -327,10 +328,10 @@ int IconRandomizer::randomize(RandomizeType type, bool dual) {
             if (idx < vecSize) {
                 if (useDual) separateDualIcons->setSavedValue("trail", num);
                 else gameManager->setPlayerStreak(num);
-                MoreIcons::setIcon("", IconType::Special, useDual);
+                more_icons::setIcon("", IconType::Special, useDual);
                 return num;
             }
-            MoreIcons::setIcon(loadedIcons[num]->name, IconType::Special, useDual);
+            if (loadedIcons) more_icons::setIcon((*loadedIcons)[num].name, IconType::Special, useDual);
             return 0;
         case ICON_RANDOMIZER_API_SHIP_FIRE:
             if (useDual) separateDualIcons->setSavedValue("shiptrail", num);

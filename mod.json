@@ -1,12 +1,12 @@
 {
-    "geode": "4.9.0",
+    "geode": "4.10.0",
     "gd": {
         "android": "2.2074",
         "win": "2.2074",
         "mac": "2.2074",
         "ios": "2.2074"
     },
-    "version": "v2.2.4",
+    "version": "v2.2.5",
     "id": "hiimjustin000.icon_randomizer_api",
     "name": "Icon Randomizer API",
     "developer": "hiimjasmine00",
@@ -23,7 +23,7 @@
         },
         "hiimjustin000.more_icons": {
             "importance": "suggested",
-            "version": ">=v1.14.0"
+            "version": ">=v1.16.0"
         }
     },
     "links": {
