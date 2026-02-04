@@ -22,6 +22,8 @@ class $modify(IRAGameStatsManager, GameStatsManager) {
 
     // When an icon or color is rewarded from a chest or other item, add it to the list of unlocked items.
     void registerRewardsFromItem(GJRewardItem* item) {
+        GameStatsManager::registerRewardsFromItem(item);
+
         for (auto object : CCArrayExt<GJRewardObject*>(item->m_rewardObjects)) {
             if (object->m_specialRewardItem == SpecialRewardItem::CustomItem && object->m_unlockType != UnlockType::GJItem) {
                 Internal::addToUnlocked(object->m_unlockType, object->m_itemID);
