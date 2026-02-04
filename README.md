@@ -6,7 +6,7 @@ To use this API, you must first add the following dependency to your `mod.json` 
 ```json
 {
     "dependencies": {
-        "hiimjustin000.icon_randomizer_api": ">=v2.2.0"
+        "hiimjustin000.icon_randomizer_api": ">=v3.0.0"
     }
 }
 ```
@@ -22,56 +22,56 @@ using namespace geode::prelude;
 IconRandomizer::init();
 
 // Randomize an icon or color
-IconRandomizer::randomize(ICON_RANDOMIZER_API_CUBE);
-IconRandomizer::randomize(ICON_RANDOMIZER_API_COLOR_1);
+IconRandomizer::randomize(RandomizeType::Cube);
+IconRandomizer::randomize(RandomizeType::Color1);
 
 // Randomize all of a certain type
-IconRandomizer::randomizeAll(ICON_RANDOMIZER_API_ALL_ICONS);
-IconRandomizer::randomizeAll(ICON_RANDOMIZER_API_ALL_SPECIAL);
-IconRandomizer::randomizeAll(ICON_RANDOMIZER_API_ALL_COLORS);
+IconRandomizer::randomizeAll(RandomizeAllType::Icons);
+IconRandomizer::randomizeAll(RandomizeAllType::Special);
+IconRandomizer::randomizeAll(RandomizeAllType::Colors);
 
 // Refresh unlocked icons and colors
 IconRandomizer::init();
 
 // Randomize a separate dual icon or color (Requires the Separate Dual Icons mod by Weebify)
-IconRandomizer::randomize(ICON_RANDOMIZER_API_CUBE, true);
-IconRandomizer::randomize(ICON_RANDOMIZER_API_COLOR_1, true);
+IconRandomizer::randomize(RandomizeType::Cube, true);
+IconRandomizer::randomize(RandomizeType::Color1, true);
 
 // Randomize all of a certain type for a separate dual icon or color
-IconRandomizer::randomizeAll(ICON_RANDOMIZER_API_ALL_ICONS, true);
-IconRandomizer::randomizeAll(ICON_RANDOMIZER_API_ALL_SPECIAL, true);
-IconRandomizer::randomizeAll(ICON_RANDOMIZER_API_ALL_COLORS, true);
+IconRandomizer::randomizeAll(RandomizeAllType::Icons, true);
+IconRandomizer::randomizeAll(RandomizeAllType::Special, true);
+IconRandomizer::randomizeAll(RandomizeAllType::Colors, true);
 ```
 Full documentation can be found [here](https://github.com/hiimjasmine00/IconRandomizerAPI/blob/master/include/IconRandomizer.hpp).
 
 ## Constants
-The following constants are available for use:
+The following enums are available for use:
 ```cpp
-enum RandomizeType {
-    ICON_RANDOMIZER_API_COLOR_1 = 0,
-    ICON_RANDOMIZER_API_COLOR_2 = 1,
-    ICON_RANDOMIZER_API_GLOW_COLOR = 2,
-    ICON_RANDOMIZER_API_GLOW = 3,
-    ICON_RANDOMIZER_API_CUBE = 4,
-    ICON_RANDOMIZER_API_SHIP = 5,
-    ICON_RANDOMIZER_API_BALL = 6,
-    ICON_RANDOMIZER_API_UFO = 7,
-    ICON_RANDOMIZER_API_WAVE = 8,
-    ICON_RANDOMIZER_API_ROBOT = 9,
-    ICON_RANDOMIZER_API_SPIDER = 10,
-    ICON_RANDOMIZER_API_SWING = 11,
-    ICON_RANDOMIZER_API_JETPACK = 12,
-    ICON_RANDOMIZER_API_DEATH_EFFECT = 13,
-    ICON_RANDOMIZER_API_TRAIL = 14,
-    ICON_RANDOMIZER_API_SHIP_FIRE = 15,
-    ICON_RANDOMIZER_API_ANIMATION = 16,
-    ICON_RANDOMIZER_API_EXPLODE = 17
+enum class RandomizeType {
+    Color1 = 0,
+    Color2 = 1,
+    GlowColor = 2,
+    Glow = 3,
+    Cube = 4,
+    Ship = 5,
+    Ball = 6,
+    Ufo = 7,
+    Wave = 8,
+    Robot = 9,
+    Spider = 10,
+    Swing = 11,
+    Jetpack = 12,
+    DeathEffect = 13,
+    Trail = 14,
+    ShipFire = 15,
+    Animation = 16,
+    Explode = 17
 };
 
-enum RandomizeAllType {
-    ICON_RANDOMIZER_API_ALL_ICONS = 0,
-    ICON_RANDOMIZER_API_ALL_SPECIAL = 1,
-    ICON_RANDOMIZER_API_ALL_COLORS = 2
+enum class RandomizeAllType {
+    Icons = 0,
+    Special = 1,
+    Colors = 2
 };
 ```
 

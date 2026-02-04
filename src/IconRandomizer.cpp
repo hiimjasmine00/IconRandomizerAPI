@@ -1,4 +1,3 @@
-#include "Internal.hpp"
 #include <Geode/binding/GameManager.hpp>
 #include <Geode/binding/GameStatsManager.hpp>
 #include <Geode/loader/GameEvent.hpp>
@@ -10,7 +9,6 @@
 
 using namespace geode::prelude;
 
-// A list of the IDs the player has unlocked for each type of icon.
 std::map<UnlockType, std::vector<int>> unlocked = {
     { UnlockType::Cube, {} },
     { UnlockType::Col1, {} },
@@ -29,16 +27,13 @@ std::map<UnlockType, std::vector<int>> unlocked = {
     { UnlockType::ShipFire, {} }
 };
 
-$on_game(Loaded) {
-    // Initialize the Icon Randomizer API when the game is loaded.
+$on_game(ModsLoaded) {
     IconRandomizer::init();
 }
 
 void IconRandomizer::init() {
-    // Get the game manager.
     auto gameManager = GameManager::get();
 
-    // For each icon type, set up the unlocked icons.
     constexpr std::array icons = {
         std::make_pair(IconType::Cube, UnlockType::Cube),
         std::make_pair(IconType::Ship, UnlockType::Ship),
@@ -56,11 +51,9 @@ void IconRandomizer::init() {
     };
 
     for (auto [iconType, unlockType] : icons) {
-        // Get the vector of unlocked icons for the unlock type, then clear the vector.
         auto& vec = unlocked[unlockType];
         vec.clear();
 
-        // Get the amount of icons for the type, then iterate through them and add them to the vector if they are unlocked.
         auto amount = iconType == IconType::Item ? 20 : gameManager->countForType(iconType);
         for (int i = iconType == IconType::Item ? 18 : 1; i <= amount; i++) {
             if (gameManager->isIconUnlocked(i, iconType)) vec.push_back(i);
@@ -73,29 +66,16 @@ void IconRandomizer::init() {
     };
 
     for (auto unlockType : colors) {
-        // Get the vector of unlocked colors for the unlock type, then clear the vector.
         auto& vec = unlocked[unlockType];
         vec.clear();
 
-        // Iterate through the colors and add them to the vector if they are unlocked.
         for (int i = 0; i < 107; i++) {
             if (gameManager->isColorUnlocked(i, unlockType)) vec.push_back(i);
         }
     }
 }
 
-// The function to add an icon or color to the list of unlocked icons or colors.
-void Internal::addToUnlocked(UnlockType type, int id) {
-    // Get the vector of unlocked icons or colors for the type, then add the ID to the vector if it is not already in it.
-    auto& vec = unlocked[type];
-    if (!std::ranges::contains(vec, id)) {
-        vec.push_back(id);
-        std::ranges::sort(vec);
-    }
-}
-
 RandomizeType IconRandomizer::fromIconType(IconType type) {
-    // Convert the icon type to a randomize type.
     switch (type) {
         case IconType::Cube: return RandomizeType::Cube;
         case IconType::Ship: return RandomizeType::Ship;
@@ -115,7 +95,6 @@ RandomizeType IconRandomizer::fromIconType(IconType type) {
 }
 
 RandomizeType IconRandomizer::fromUnlockType(UnlockType type) {
-    // Convert the unlock type to a randomize type.
     switch (type) {
         case UnlockType::Cube: return RandomizeType::Cube;
         case UnlockType::Col1: return RandomizeType::Color1;
@@ -137,7 +116,6 @@ RandomizeType IconRandomizer::fromUnlockType(UnlockType type) {
 }
 
 IconType IconRandomizer::toIconType(RandomizeType type) {
-    // Convert the randomize type to an icon type.
     switch (type) {
         case RandomizeType::Color1: return IconType::Item;
         case RandomizeType::Color2: return IconType::Item;
@@ -162,7 +140,6 @@ IconType IconRandomizer::toIconType(RandomizeType type) {
 }
 
 UnlockType IconRandomizer::toUnlockType(RandomizeType type) {
-    // Convert the randomize type to an unlock type.
     switch (type) {
         case RandomizeType::Color1: return UnlockType::Col1;
         case RandomizeType::Color2: return UnlockType::Col2;
@@ -187,13 +164,10 @@ UnlockType IconRandomizer::toUnlockType(RandomizeType type) {
 }
 
 int IconRandomizer::randomize(RandomizeType type, bool dual) {
-    // If the type is invalid, return -1.
     if (type < RandomizeType::Color1 || type > RandomizeType::Explode) return -1;
 
-    // Get the UnlockType from the randomize type, and get the vector of unlocked icons.
     auto& vec = unlocked[toUnlockType(type)];
 
-    // If it is an animation, randomly enable or disable the animations, and return 0.
     if (type == RandomizeType::Animation) {
         auto gameStatsManager = GameStatsManager::get();
         for (int i = 0; i < vec.size(); i++) {
@@ -202,9 +176,6 @@ int IconRandomizer::randomize(RandomizeType type, bool dual) {
         return 0;
     }
 
-    // Get the game manager and the Separate Dual Icons mod.
-    // If the mod is enabled and the dual parameter is true, use separate dual icons.
-    // Then get a random number from the vector of unlocked icons.
     auto gameManager = GameManager::get();
     auto separateDualIcons = Loader::get()->getLoadedMod("weebify.separate_dual_icons");
     auto useDual = separateDualIcons && dual;
@@ -216,9 +187,6 @@ int IconRandomizer::randomize(RandomizeType type, bool dual) {
     auto glow = type == RandomizeType::Glow && std::ranges::contains(unlocked[UnlockType::Streak], 2) ? random::generate<bool>() : false;
     auto explode = type == RandomizeType::Explode ? random::generate<bool>() : false;
 
-    // Then, set the icon to the random number.
-    // If Separate Dual Icons is enabled and the dual parameter is true, set the value in the mod.
-    // Otherwise, set the value in the game manager.
     switch (type) {
         case RandomizeType::Color1:
             if (useDual) separateDualIcons->setSavedValue("color1", num);
@@ -354,7 +322,6 @@ int IconRandomizer::randomize(RandomizeType type, bool dual) {
 }
 
 void IconRandomizer::randomizeAll(RandomizeAllType type, bool dual) {
-    // Switch on the randomize all type and randomize all the icons of that type.
     switch (type) {
         case RandomizeAllType::Icons:
             randomize(RandomizeType::Cube, dual);
@@ -384,13 +351,9 @@ void IconRandomizer::randomizeAll(RandomizeAllType type, bool dual) {
 }
 
 int IconRandomizer::active(RandomizeType type, bool dual) {
-    // Get the game manager, then get the Separate Dual Icons mod.
-    // If the mod is enabled and the dual parameter is true, use separate dual icons.
     auto separateDualIcons = dual ? Loader::get()->getLoadedMod("weebify.separate_dual_icons") : nullptr;
     auto gameManager = separateDualIcons ? nullptr : GameManager::get();
 
-    // Get the value from the Separate Dual Icons mod if it is enabled and the dual parameter is true,
-    // otherwise get the value from the game manager.
     switch (type) {
         case RandomizeType::Color1:
             return separateDualIcons ? separateDualIcons->getSavedValue("color1", 0) : gameManager->getPlayerColor();

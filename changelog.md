@@ -2,6 +2,7 @@
 ## v3.0.0 (2026-02-04)
 - Ported to Geometry Dash v2.208 / Geode SDK v5.0.0
 - Made RandomizeType and RandomizeAllType scoped enums and moved them to their own header
+- Removed the auto-refreshing functionality from the mod, reverting to the manual refresh method
 
 ## v2.2.5 (2025-12-07)
 - Updated More Icons support to match the new API
