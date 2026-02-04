@@ -1,12 +1,12 @@
 {
-    "geode": "4.10.0",
+    "geode": "5.0.0-alpha.1",
     "gd": {
-        "android": "2.2074",
-        "win": "2.2074",
-        "mac": "2.2074",
-        "ios": "2.2074"
+        "android": "2.2081",
+        "win": "2.2081",
+        "mac": "2.2081",
+        "ios": "2.2081"
     },
-    "version": "v2.2.5",
+    "version": "v3.0.0-beta.1",
     "id": "hiimjustin000.icon_randomizer_api",
     "name": "Icon Randomizer API",
     "developer": "hiimjasmine00",
@@ -17,13 +17,9 @@
         ]
     },
     "dependencies": {
-        "hiimjustin000.better_icon_randomizer": {
-            "importance": "suggested",
-            "version": ">=v1.5.0"
-        },
         "hiimjustin000.more_icons": {
             "importance": "suggested",
-            "version": ">=v1.16.0"
+            "version": ">=v2.0.0-beta.1"
         }
     },
     "links": {
