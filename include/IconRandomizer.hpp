@@ -58,4 +58,4 @@ namespace IconRandomizer {
     /// @param dual Whether or not to get the ID for the separate dual icon or color. (Requires the mod "Separate Dual Icons" by Weebify)
     /// @returns The ID of the current icon.
     ICON_RANDOMIZER_API_DLL int active(RandomizeType type, bool dual = false);
-};
+}
